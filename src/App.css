@@ -7,7 +7,7 @@
 }
 
 .formWrapper {
-  background-color: #272727;
+  background: #282a36;
   padding: 20px;
   border-radius: 10px;
   width: 400px;
@@ -44,7 +44,7 @@ footer a {
   outline: none;
   border: none;
   margin-bottom: 14px;
-  background-color: #eee;
+  background: #eee;
   font-size: 16px;
   font-weight: bold;
 }
@@ -54,19 +54,21 @@ footer a {
   padding: 10px;
   border-radius: 5px;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
-.joinBtn {
-  background-color: #4aee88;
+.joinBtn,
+.leaveBtn {
+  background: #4aed88;
   width: 100px;
   margin-left: auto;
 }
 
 .joinBtn:hover,
 .leaveBtn:hover {
-  background-color: #2b824c;
+  background: #2b824c;
 }
 
 .createInfo {
@@ -75,31 +77,30 @@ footer a {
 }
 
 .createNewBtn {
-  color: #4aee88;
+  color: #4aed88;
   text-decoration: none;
-  border-bottom: 1px solid #4aee88;
+  border-bottom: 1px solid #4aed88;
   transition: all 0.3s ease-in-out;
 }
 
 .createNewBtn:hover,
 footer a:hover {
-  color: #2b824c;
+  color: #368654;
+  border-color: #368654;
 }
 
 .mainWrap {
   display: grid;
-  grid-template-columns: 230px 1fr;
-  height: 100vh;
+  grid-template-columns: 250px 1fr;
 }
 
 .aside {
-  background-color: #272727;
+  background: #1c1e29;
   padding: 16px;
-  color: white;
+  color: #fff;
   display: flex;
   flex-direction: column;
 }
-
 .asideInner {
   flex: 1;
 }
@@ -115,10 +116,9 @@ footer a:hover {
   display: flex;
   align-items: center;
   flex-direction: column;
-  font-size: bold;
+  font-weight: bold;
 }
-
-.username {
+.userName {
   margin-top: 10px;
 }
 
@@ -132,7 +132,12 @@ footer a:hover {
 }
 
 .leaveBtn {
-  margin-top: 20px;
-  background-color: #4aee88;
   width: 100%;
+  margin-top: 20px;
+}
+.CodeMirror {
+  min-height: calc(100vh - 20px);
+  font-size: 20px;
+  line-height: 1.6;
+  padding-top: 20px;
 }
