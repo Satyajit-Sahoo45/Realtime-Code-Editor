@@ -7,42 +7,43 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import ACTIONS from '../Action';
 
-const Editor = ({ socketRef, roomId }) => {
+const Editor = ({ socketRef, roomId, onCodeChange }) => {
 
     const editorRef = useRef(null);
 
     useEffect(() => {
-        async function init() {
-            editorRef.current = Codemirror.fromTextArea(
-                document.getElementById('realtimeEditor'),
-                {
-                    mode: { name: 'javascript', json: true },
-                    theme: 'dracula',
-                    autoCloseTags: true,
-                    autoCloseBrackets: true,
-                    lineNumbers: true,
+        const textareaElement = document.getElementById('realtimeEditor');
+
+        if (editorRef.current) {
+            // If there's an existing CodeMirror instance, destroy it
+            editorRef.current.toTextArea();
+        }
+
+        editorRef.current = Codemirror.fromTextArea(textareaElement, {
+            mode: { name: 'javascript', json: true },
+            theme: 'dracula',
+            autoCloseTags: true,
+            autoCloseBrackets: true,
+            lineNumbers: true,
+        });
+
+        editorRef.current.on('change', (instance, changes) => {
+            const { origin } = changes;
+            const code = instance.getValue();
+            onCodeChange(code);
+
+            if (origin !== 'setValue') {
+                socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+                    roomId,
+                    code,
                 });
+            }
+        });
 
-
-            editorRef.current.on('change', (instance, changes) => {
-                const { origin } = changes;
-
-                const code = instance.getValue();
-
-                if (origin !== 'setValue') {
-                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
-                        roomId,
-                        code
-                    })
-                }
-            });
+        return () => {
+            // Cleanup: Make sure to destroy the CodeMirror instance on component unmount
+            editorRef.current.toTextArea();
         };
-
-        // return () => {
-        //     editor.toTextArea();
-        // };
-
-        init();
     }, []);
 
     useEffect(() => {
