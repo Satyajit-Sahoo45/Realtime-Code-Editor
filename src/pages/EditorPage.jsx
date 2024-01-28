@@ -45,9 +45,24 @@ const EditorPage = () => {
                 }
                 setClients(clients)
             })
+
+            // Listning for dusconnected
+            socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+                toast.success(`${username} left the room.`);
+                setClients((prev) => {
+                    return prev.filter(client => client.socketId !== socketId)
+                })
+            })
         }
 
-        init()
+        init();
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+                socketRef.current.off(ACTIONS.JOINED);
+                socketRef.current.off(ACTIONS.DISCONNECTED);
+            }
+        }
     }, [])
 
     if (!location.state) {
@@ -77,7 +92,7 @@ const EditorPage = () => {
                 <button className="btn leaveBtn">Leave</button>
             </div>
             <div className="editorWrap">
-                <Editor />
+                <Editor socketRef={socketRef} roomId={roomId} />
             </div>
         </div>
     )
